@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-25T22:29:08.423Z",
+  "baseUrl": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/files/",
+  "minecraft": "1.21.1",
+  "neoForge": "21.1.244",
+  "files": [
+    {
+      "path": "mods/LuneryaAdmin-1.21.1-1.4.0.jar",
+      "url": "mods/LuneryaAdmin-1.21.1-1.4.0.jar",
+      "sha256": "cbb84069390861cf8716f0af60296bf2b239d5abf526a41292a3101caa4f2148",
+      "size": 115553,
+      "required": true
+    },
+    {
+      "path": "mods/geckolib-neoforge-1.21.1-4.9.2.jar",
+      "url": "mods/geckolib-neoforge-1.21.1-4.9.2.jar",
+      "sha256": "5e548466af9ab6aca7a91a7c7d4dc0dc8bc385e22958aed5da0e7bebd0fa3fba",
+      "size": 630584,
+      "required": true
+    },
+    {
+      "path": "mods/lunerya-0.1.0.jar",
+      "url": "mods/lunerya-0.1.0.jar",
+      "sha256": "836077708235c582637aaba803df232c3686a57b5277579ce1de2668db49114e",
+      "size": 28280573,
+      "required": true
+    },
+    {
+      "path": "mods/luneryapass-1.1.0.jar",
+      "url": "mods/luneryapass-1.1.0.jar",
+      "sha256": "5f9195dab269f206d6f04b9a91afbefd697dc02d663fb6c8e6d1b2b514d11c6f",
+      "size": 669157,
+      "required": true
+    },
+    {
+      "path": "mods/neoessentials-1.0.2.6-mc1.21.1+build.480.jar",
+      "url": "mods/neoessentials-1.0.2.6-mc1.21.1%2Bbuild.480.jar",
+      "sha256": "9aedcaf10fe7a41f911d05ccfc4b32854b5bcad8dd08fb6047ea18e705c35785",
+      "size": 15865714,
+      "required": true
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+name: Publish Noxarium and Luneryum names only
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-noxarium-luneryum.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lunerya-gh-pages-noxarium-luneryum
+  cancel-in-progress: false
+
+jobs:
+  publish-names:
+    name: Patch currently distributed premium JAR and update its SHA-256
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out verified patch
+        uses: actions/checkout@v4
+        with:
+          path: patch
+
+      - name: Check out exact current published files
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          persist-credentials: true
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Modify only two locale JSON files inside current JAR
+        run: python patch/patches/noxarium/patch_live.py --site site
+
+      - name: Confirm only the JAR and manifest changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd site
+          git add manifest.json files/mods/lunerya-0.1.0.jar
+          git diff --cached --quiet && { echo 'No changes; refusing empty deployment'; exit 1; }
+          changes="$(git diff --cached --name-only)"
+          expected="$(printf 'files/mods/lunerya-0.1.0.jar\nmanifest.json')"
+          test "$changes" = "$expected" || { echo "Unexpected changes: $changes"; exit 1; }
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Lunerya: rename displayed resources to Noxarium/Luneryum only"
+          git push origin HEAD:gh-pages

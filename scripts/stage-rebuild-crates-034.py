@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""Reconstruct the exact supplied LuneryaCrates JAR from the published build.
-Fail CLOSED if any other byte differs. Operates only on the staging branch.
-"""
+"""Rebuild the user's EXACT supplied JAR from published ZIP data. Fail closed."""
 import base64
 import hashlib
 import io
@@ -9,106 +7,103 @@ import pathlib
 import struct
 import sys
 import zipfile
-import zlib
 
 EXPECTED = "9ab07e5a53c6d7d5657d54ddb1aec724f5da13c50d8d7ff0b17cdb3ac9fb1ba2"
-EXPECTED_SIZE = 2666215
-TARGET = "assets/luneryacrates/lang/fr_fr.json"
-HEADER = bytes.fromhex(
-    "504b03041400000808000000410097b32d951d0100007204000024000000"
-    "6173736574732f6c756e657279616372617465732f6c616e672f66725f66722e6a736f6e"
-)
+BASE = "assets/luneryacrates/lang/fr_fr.json"
 DATA = base64.b64decode(
-    "hZPBTsMwDEDvk/YPUa9D07QLEje0SVzQTrATUmVab0RLk5EmExPig/Yd+zGaBAFe3ay3On1+ju1+"
-    "jkeiewrpsHmwxu+nymu0R6gsOGyLu+7sMUXEIoVufpBXZaod/XwKrbNYxpeILsxmY1HUL342m9/"
-    "eh9NfPihZfIfHBKvzSSwTCgTl1AdQxvbV6xDOORNHnJThZE460H3ZUwjnZIkjMsqwTdVbLGus3v"
-    "xgZ58taOmbbG//shD/QAaukBoboyW8e27EXqzOJ9AuV8O/BKSGRObn26LcavS27MIguS1bmQ+wV"
-    "7rQy0LruMzALppx3P27VTMuu90RpL2/gAZ1e+XbQefkqjTinHmSn7c8SGbLlyGcHXPk6G8cQli"
-    "MR1/f"
+ "hZPBTsMwDEDvk/YPUa9D07QLEje0SVzQTrATUmVab0RLk5EmExPig/Yd+zGaBAFe3ay3On1+ju1+"
+ "jkeiewrpsHmwxu+nymu0R6gsOGyLu+7sMUXEIoVufpBXZaod/XwKrbNYxpeILsxmY1HUL342m9/"
+ "eh9NfPihZfIfHBKvzSSwTCgTl1AdQxvbV6xDOORNHnJThZE460H3ZUwjnZIkjMsqwTdVbLGus3v"
+ "xgZ58taOmbbG//shD/QAaukBoboyW8e27EXqzOJ9AuV8O/BKSGRObn26LcavS27MIguS1bmQ+wV"
+ "7rQy0LruMzALppx3P27VTMuu90RpL2/gAZ1e+XbQefkqjTinHmSn7c8SGbLlyGcHXPk6G8cQli"
+ "MR1/f"
 )
+HEAD = {
+ BASE: bytes.fromhex(
+  "504b03041400000808000000410097b32d951d0100007204000024000000"
+  "6173736574732f6c756e657279616372617465732f6c616e672f66725f66722e6a736f6e"
+ ),
+ BASE + ".backup": bytes.fromhex(
+  "504b03041400000808000000410097b32d951d010000720400002b000000"
+  "6173736574732f6c756e657279616372617465732f6c616e672f66725f66722e6a736f6e2e6261636b7570"
+ ),
+}
 
-def reconstruct(src: str, dst: str) -> None:
-    original = pathlib.Path(src).read_bytes()
-    with zipfile.ZipFile(io.BytesIO(original)) as z:
-        items = z.infolist()
-        for item in items:
-            if item.filename.startswith('assets/luneryacrates/lang/'):
-                print('LANG_META', item.filename, hex(item.CRC), item.compress_size, item.file_size)
-        print("OLD_NAMES_SHA", hashlib.sha256("\\n".join(x.filename for x in items).encode()).hexdigest())
-        print("OLD_SORTED_NAMES_SHA", hashlib.sha256("\\n".join(sorted(x.filename for x in items)).encode()).hexdigest())
-        print("OLD_NAMES_COMPRESSED", base64.b64encode(zlib.compress("\\n".join(x.filename for x in items).encode(),9)).decode())
-        old_meta = b"".join(struct.pack(">III", x.CRC, x.compress_size, x.file_size) for x in items)
-        print("OLD_METADATA_B64", base64.b64encode(zlib.compress(old_meta, 9)).decode())
-        fr = z.getinfo(TARGET)
-        central_start = z.start_dir
-        n, x = struct.unpack_from("<HH", original, fr.header_offset + 26)
-        data_start = fr.header_offset + 30 + n + x
-        if fr.flag_bits & 8:
-            raise RuntimeError("Unexpected ZIP data descriptor")
-        if len(DATA) != struct.unpack_from("<I", HEADER, 18)[0]:
-            raise RuntimeError("New compressed data length invalid")
+def build(source, destination):
+    original = pathlib.Path(source).read_bytes()
+    with zipfile.ZipFile(io.BytesIO(original)) as zip_file:
+        entries = sorted(
+            (zip_file.getinfo(name) for name in HEAD),
+            key=lambda item: item.header_offset
+        )
+        parts = []
+        pos = 0
+        deltas = []
+        for entry in entries:
+            start = entry.header_offset
+            name_len, extra_len = struct.unpack_from("<HH", original, start + 26)
+            data_start = start + 30 + name_len + extra_len
+            data_end = data_start + entry.compress_size
+            if entry.flag_bits & 8 or original[start:start + 4] != b"PK\x03\x04":
+                raise RuntimeError("Unsupported source ZIP layout")
+            parts.extend([original[pos:start], HEAD[entry.filename], DATA])
+            change = len(HEAD[entry.filename]) + len(DATA) - (data_end - start)
+            deltas.append((start, change))
+            pos = data_end
 
-        delta = len(HEADER) + len(DATA) - (
-            data_start + fr.compress_size - fr.header_offset
-        )
-        new_local = bytearray(
-            original[:fr.header_offset] + HEADER + DATA +
-            original[data_start + fr.compress_size:central_start]
-        )
-        new_central = bytearray(original[central_start:])
-        p = 0
-        found = False
-        while (p + 46 <= len(new_central) and
-               new_central[p:p+4] == b"PK\x01\x02"):
+        parts.append(original[pos:zip_file.start_dir])
+        local = b"".join(parts)
+        central = bytearray(original[zip_file.start_dir:])
+        index = 0
+        found = set()
+        while (index + 46 <= len(central) and
+               central[index:index + 4] == b"PK\x01\x02"):
             name_len, extra_len, comment_len = struct.unpack_from(
-                "<HHH", new_central, p + 28
+                "<HHH", central, index + 28
             )
-            name = new_central[p+46:p+46+name_len].decode("utf-8")
-            offset = struct.unpack_from("<I", new_central, p + 42)[0]
-            if name == TARGET:
-                if offset != fr.header_offset:
-                    raise RuntimeError("Unexpected translation offset")
+            name = central[index + 46:index + 46 + name_len].decode("utf-8")
+            old_offset = struct.unpack_from("<I", central, index + 42)[0]
+            new_offset = old_offset + sum(
+                amount for location, amount in deltas if old_offset > location
+            )
+            struct.pack_into("<I", central, index + 42, new_offset)
+            if name in HEAD:
                 struct.pack_into(
-                    "<III", new_central, p + 16, 0x952db397, len(DATA), 1138
+                    "<III", central, index + 16, 0x952db397, len(DATA), 1138
                 )
-                found = True
-            elif offset > fr.header_offset:
-                struct.pack_into("<I", new_central, p + 42, offset + delta)
-            p += 46 + name_len + extra_len + comment_len
+                found.add(name)
+            index += 46 + name_len + extra_len + comment_len
 
-        if not found:
-            raise RuntimeError("Translation absent from ZIP central directory")
-        eocd = new_central.find(b"PK\x05\x06", p)
+        if found != set(HEAD):
+            raise RuntimeError("Unexpected changed entry count")
+        eocd = central.find(b"PK\x05\x06", index)
         if eocd < 0:
-            raise RuntimeError("Missing ZIP end marker")
-        previous_central_offset = struct.unpack_from(
-            "<I", new_central, eocd + 16
-        )[0]
-        if previous_central_offset != central_start:
-            raise RuntimeError("Unexpected ZIP central directory position")
+            raise RuntimeError("End-of-central-directory missing")
+        old_central_offset = struct.unpack_from("<I", central, eocd + 16)[0]
+        if old_central_offset != zip_file.start_dir:
+            raise RuntimeError("Unexpected source central-directory location")
         struct.pack_into(
-            "<I", new_central, eocd + 16, previous_central_offset + delta
+            "<I", central, eocd + 16,
+            old_central_offset + sum(amount for _, amount in deltas)
         )
 
-        result = bytes(new_local) + bytes(new_central)
+        result = local + central
         actual = hashlib.sha256(result).hexdigest()
-        print(
-            f"Published bytes={len(original)} delta={delta} "
-            f"result bytes={len(result)} sha256={actual}"
-        )
-        if len(result) != EXPECTED_SIZE or actual != EXPECTED:
+        print(f"Previous size={len(original)}, changes={deltas}, "
+              f"result size={len(result)}, result SHA-256={actual}")
+        if len(result) != 2666215 or actual != EXPECTED:
             raise RuntimeError(
-                "The reconstruction does NOT match the exact user-uploaded JAR. "
-                "Nothing has been published."
+                "Result differs from the EXACT user-supplied JAR. "
+                "No binary has been published."
             )
-        with zipfile.ZipFile(io.BytesIO(result)) as final:
-            translation = final.read(TARGET).decode("utf-8")
+        with zipfile.ZipFile(io.BytesIO(result)) as check:
+            translation = check.read(BASE).decode("utf-8")
             if "Coffre Noxarium" not in translation or "Clé Néante" not in translation:
-                raise RuntimeError("Expected corrected translations are absent")
-        target_path = pathlib.Path(dst)
-        target_path.parent.mkdir(parents=True, exist_ok=True)
-        target_path.write_bytes(result)
-        print("EXACT USER-UPLOADED JAR VERIFIED")
+                raise RuntimeError("Corrected French translations not present")
+        target = pathlib.Path(destination)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(result)
+        print("VERIFIED: exact byte-for-byte user JAR reconstructed")
 
 if __name__ == "__main__":
-    reconstruct(sys.argv[1], sys.argv[2])
+    build(sys.argv[1], sys.argv[2])

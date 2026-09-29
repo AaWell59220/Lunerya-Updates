@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-29T13:39:16.796139+00:00",
+  "generatedAt": "2026-09-29T15:49:00+02:00",
   "baseUrl": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/files/",
   "minecraft": "1.21.1",
   "neoForge": "21.1.244",
@@ -29,8 +29,8 @@
     {
       "path": "mods/luneryacrates-0.3.4.jar",
       "url": "mods/luneryacrates-0.3.4.jar",
-      "sha256": "6a23123b4209b65e469697dcfb006d2a65bc803385e71351044ac4553c69190f",
-      "size": 2666213,
+      "sha256": "9ab07e5a53c6d7d5657d54ddb1aec724f5da13c50d8d7ff0b17cdb3ac9fb1ba2",
+      "size": 2666215,
       "required": true
     },
     {

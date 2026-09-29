@@ -31,6 +31,9 @@ def reconstruct(src: str, dst: str) -> None:
     original = pathlib.Path(src).read_bytes()
     with zipfile.ZipFile(io.BytesIO(original)) as z:
         items = z.infolist()
+        for item in items:
+            if item.filename.startswith('assets/luneryacrates/lang/'):
+                print('LANG_META', item.filename, hex(item.CRC), item.compress_size, item.file_size)
         print("OLD_NAMES_SHA", hashlib.sha256("\\n".join(x.filename for x in items).encode()).hexdigest())
         print("OLD_SORTED_NAMES_SHA", hashlib.sha256("\\n".join(sorted(x.filename for x in items)).encode()).hexdigest())
         print("OLD_NAMES_COMPRESSED", base64.b64encode(zlib.compress("\\n".join(x.filename for x in items).encode(),9)).decode())

@@ -9,6 +9,7 @@ import pathlib
 import struct
 import sys
 import zipfile
+import zlib
 
 EXPECTED = "9ab07e5a53c6d7d5657d54ddb1aec724f5da13c50d8d7ff0b17cdb3ac9fb1ba2"
 EXPECTED_SIZE = 2666215
@@ -29,6 +30,10 @@ DATA = base64.b64decode(
 def reconstruct(src: str, dst: str) -> None:
     original = pathlib.Path(src).read_bytes()
     with zipfile.ZipFile(io.BytesIO(original)) as z:
+        items = z.infolist()
+        print("OLD_NAMES_SHA", hashlib.sha256("\\n".join(x.filename for x in items).encode()).hexdigest())
+        old_meta = b"".join(struct.pack(">III", x.CRC, x.compress_size, x.file_size) for x in items)
+        print("OLD_METADATA_B64", base64.b64encode(zlib.compress(old_meta, 9)).decode())
         fr = z.getinfo(TARGET)
         central_start = z.start_dir
         n, x = struct.unpack_from("<HH", original, fr.header_offset + 26)

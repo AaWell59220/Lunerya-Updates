@@ -32,6 +32,7 @@ def reconstruct(src: str, dst: str) -> None:
     with zipfile.ZipFile(io.BytesIO(original)) as z:
         items = z.infolist()
         print("OLD_NAMES_SHA", hashlib.sha256("\\n".join(x.filename for x in items).encode()).hexdigest())
+        print("OLD_SORTED_NAMES_SHA", hashlib.sha256("\\n".join(sorted(x.filename for x in items)).encode()).hexdigest())
         old_meta = b"".join(struct.pack(">III", x.CRC, x.compress_size, x.file_size) for x in items)
         print("OLD_METADATA_B64", base64.b64encode(zlib.compress(old_meta, 9)).decode())
         fr = z.getinfo(TARGET)

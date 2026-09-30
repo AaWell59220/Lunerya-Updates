@@ -1,0 +1,102 @@
+name: Publish final LuneryaAdmin 3.0.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-admin-v43.yml
+      - patches/admin-v43/**
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lunerya-admin-v43
+  cancel-in-progress: false
+
+jobs:
+  publish-admin:
+    name: Replace the distributed LuneryaAdmin JAR only
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out verified deployment patch
+        uses: actions/checkout@v4
+        with:
+          path: patch
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download exact currently distributed Admin base
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p work out
+          curl --fail --location --retry 3 --connect-timeout 30 \
+            https://github.com/AaWell59220/Lunerya-Updates/releases/download/lunerya-launcher-v1.0.42-assets/LuneryaAdmin-1.21.1-3.0.0-ZonesTP.jar \
+            -o work/base.jar
+          echo 'e7e877a8276e84d7389b49eb2f1ea917185769feab78e99345f0f8e1e7d6bf20  work/base.jar' | sha256sum -c -
+          test "$(stat -c%s work/base.jar)" = '281250708'
+
+      - name: Rebuild byte-identical JAR supplied by Enzo
+        shell: bash
+        run: |
+          set -euo pipefail
+          python patch/patches/admin-v43/rebuild_exact.py \
+            --base work/base.jar \
+            --patch patch/patches/admin-v43/exact_patch.zip \
+            --out out/LuneryaAdmin-1.21.1-3.0.0.jar
+          echo '0395aa5928579385d8a958e57933364545f63d32f64289f1abc368cfc0e06d58  out/LuneryaAdmin-1.21.1-3.0.0.jar' | sha256sum -c -
+          test "$(stat -c%s out/LuneryaAdmin-1.21.1-3.0.0.jar)" = '281268276'
+          unzip -tqq out/LuneryaAdmin-1.21.1-3.0.0.jar
+          unzip -l out/LuneryaAdmin-1.21.1-3.0.0.jar | grep -F 'fr/lunerya/adminmod/LuneryaShopRewards.class'
+
+      - name: Replace release asset
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release upload lunerya-launcher-v1.0.42-assets \
+            out/LuneryaAdmin-1.21.1-3.0.0.jar \
+            --clobber --repo AaWell59220/Lunerya-Updates
+          digest="$(gh api repos/AaWell59220/Lunerya-Updates/releases/tags/lunerya-launcher-v1.0.42-assets \
+            --jq '.assets[] | select(.name=="LuneryaAdmin-1.21.1-3.0.0.jar") | .digest')"
+          size="$(gh api repos/AaWell59220/Lunerya-Updates/releases/tags/lunerya-launcher-v1.0.42-assets \
+            --jq '.assets[] | select(.name=="LuneryaAdmin-1.21.1-3.0.0.jar") | .size')"
+          test "$digest" = 'sha256:0395aa5928579385d8a958e57933364545f63d32f64289f1abc368cfc0e06d58'
+          test "$size" = '281268276'
+
+      - name: Check out live launcher files
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          persist-credentials: true
+          fetch-depth: 1
+
+      - name: Point live manifest to the replacement
+        shell: bash
+        run: |
+          set -euo pipefail
+          python patch/patches/admin-v43/update_manifest.py --manifest site/manifest.json
+
+      - name: Publish manifest only
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd site
+          git add manifest.json
+          if git diff --cached --quiet; then
+            echo 'Manifest already current; no gh-pages commit needed.'
+            exit 0
+          fi
+          changes="$(git diff --cached --name-only)"
+          test "$changes" = 'manifest.json' || { echo "Unexpected changes: $changes"; exit 1; }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Replace LuneryaAdmin with final 3.0.0 build'
+          git push origin HEAD:gh-pages

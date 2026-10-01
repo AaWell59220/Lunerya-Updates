@@ -1,0 +1,101 @@
+name: Publish LuneryaAdmin Reward UI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-admin-reward-ui.yml
+      - patches/admin-reward-ui/**
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lunerya-admin-reward-ui
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out deployment patch
+        uses: actions/checkout@v4
+        with:
+          path: patch
+
+      - name: Install zip
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq zip
+
+      - name: Download current launcher Admin
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p work out
+          curl --fail --location --retry 3 --connect-timeout 30 \
+            https://github.com/AaWell59220/Lunerya-Updates/releases/download/lunerya-launcher-v1.0.42-assets/LuneryaAdmin-1.21.1-3.0.0.jar \
+            -o work/base.jar
+          echo '0395aa5928579385d8a958e57933364545f63d32f64289f1abc368cfc0e06d58  work/base.jar' | sha256sum -c -
+          test "$(stat -c%s work/base.jar)" = '281268276'
+
+      - name: Apply Reward UI patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python patch/patches/admin-reward-ui/rebuild.py \
+            --base work/base.jar \
+            --patch patch/patches/admin-reward-ui/reward-ui-classes.zip \
+            --out out/LuneryaAdmin-1.21.1-3.0.0.jar | tee work/build-info.txt
+          sha="$(grep '^FINAL_SHA256=' work/build-info.txt | cut -d= -f2)"
+          size="$(grep '^FINAL_SIZE=' work/build-info.txt | cut -d= -f2)"
+          test -n "$sha"
+          test -n "$size"
+          echo "ADMIN_SHA256=$sha" >> "$GITHUB_ENV"
+          echo "ADMIN_SIZE=$size" >> "$GITHUB_ENV"
+          unzip -tqq out/LuneryaAdmin-1.21.1-3.0.0.jar
+
+      - name: Replace launcher release asset
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release upload lunerya-launcher-v1.0.42-assets \
+            out/LuneryaAdmin-1.21.1-3.0.0.jar \
+            --clobber --repo AaWell59220/Lunerya-Updates
+          digest="$(gh api repos/AaWell59220/Lunerya-Updates/releases/tags/lunerya-launcher-v1.0.42-assets \
+            --jq '.assets[] | select(.name=="LuneryaAdmin-1.21.1-3.0.0.jar") | .digest')"
+          size="$(gh api repos/AaWell59220/Lunerya-Updates/releases/tags/lunerya-launcher-v1.0.42-assets \
+            --jq '.assets[] | select(.name=="LuneryaAdmin-1.21.1-3.0.0.jar") | .size')"
+          test "$digest" = "sha256:$ADMIN_SHA256"
+          test "$size" = "$ADMIN_SIZE"
+
+      - name: Check out live manifest
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          persist-credentials: true
+          fetch-depth: 1
+
+      - name: Update live manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python patch/patches/admin-reward-ui/update_manifest.py \
+            --manifest site/manifest.json \
+            --sha256 "$ADMIN_SHA256" \
+            --size "$ADMIN_SIZE"
+
+      - name: Publish manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd site
+          git add manifest.json
+          changes="$(git diff --cached --name-only)"
+          test "$changes" = "manifest.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Replace LuneryaAdmin with Reward UI build'
+          git push origin HEAD:gh-pages

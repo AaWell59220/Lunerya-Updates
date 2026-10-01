@@ -36,6 +36,10 @@ def main() -> None:
     p.add_argument("--out", required=True, type=Path)
     args = p.parse_args()
 
+    args.base = args.base.resolve()
+    args.patch = args.patch.resolve()
+    args.out = args.out.resolve()
+
     if args.base.stat().st_size != BASE_SIZE or sha256_file(args.base) != BASE_SHA256:
         raise SystemExit("Refus: le LuneryaAdmin public n'est plus la base verifiee.")
     if sha256_file(args.patch) != PATCH_SHA256:
@@ -63,8 +67,6 @@ def main() -> None:
                 out_file.parent.mkdir(parents=True, exist_ok=True)
                 out_file.write_bytes(data)
 
-            # Info-ZIP remplace les anciennes entrees et ajoute les nouvelles
-            # sans recompresser le reste de l'enorme JAR.
             cmd = ["zip", "-q", "-X", str(args.out)] + sorted(REQUIRED)
             subprocess.run(cmd, cwd=root, check=True)
 

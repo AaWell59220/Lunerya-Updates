@@ -1,0 +1,73 @@
+name: Publish LuneryaAdmin Clean Chat
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-admin-clean-chat.yml
+      - patches/admin-clean-chat/**
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: lunerya-admin-clean-chat
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: patch
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq zip
+      - name: Download current launcher Admin
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p work out
+          curl --fail --location --retry 3 --connect-timeout 30             https://github.com/AaWell59220/Lunerya-Updates/releases/download/lunerya-launcher-v1.0.42-assets/LuneryaAdmin-1.21.1-3.0.0.jar             -o work/base.jar
+          echo '39256ce059eb551fe83b2a300ff979ff9419367b7a8d5b6e0c6a837008e044b0  work/base.jar' | sha256sum -c -
+          test "$(stat -c%s work/base.jar)" = '281273426'
+      - name: Apply clean-chat patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python patch/patches/admin-clean-chat/rebuild.py             --base work/base.jar             --patch patch/patches/admin-clean-chat/classes.zip             --out out/LuneryaAdmin-1.21.1-3.0.0.jar | tee work/build-info.txt
+          sha="$(grep '^FINAL_SHA256=' work/build-info.txt | cut -d= -f2)"
+          size="$(grep '^FINAL_SIZE=' work/build-info.txt | cut -d= -f2)"
+          echo "ADMIN_SHA256=$sha" >> "$GITHUB_ENV"
+          echo "ADMIN_SIZE=$size" >> "$GITHUB_ENV"
+          unzip -tqq out/LuneryaAdmin-1.21.1-3.0.0.jar
+      - name: Replace release asset
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release upload lunerya-launcher-v1.0.42-assets             out/LuneryaAdmin-1.21.1-3.0.0.jar             --clobber --repo AaWell59220/Lunerya-Updates
+          digest="$(gh api repos/AaWell59220/Lunerya-Updates/releases/tags/lunerya-launcher-v1.0.42-assets --jq '.assets[] | select(.name=="LuneryaAdmin-1.21.1-3.0.0.jar") | .digest')"
+          size="$(gh api repos/AaWell59220/Lunerya-Updates/releases/tags/lunerya-launcher-v1.0.42-assets --jq '.assets[] | select(.name=="LuneryaAdmin-1.21.1-3.0.0.jar") | .size')"
+          test "$digest" = "sha256:$ADMIN_SHA256"
+          test "$size" = "$ADMIN_SIZE"
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          persist-credentials: true
+          fetch-depth: 1
+      - name: Update live manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python patch/patches/admin-clean-chat/update_manifest.py --manifest site/manifest.json --sha256 "$ADMIN_SHA256" --size "$ADMIN_SIZE"
+      - name: Publish manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd site
+          git add manifest.json
+          changes="$(git diff --cached --name-only)"
+          test "$changes" = "manifest.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Clean Lunerya chat notifications'
+          git push origin HEAD:gh-pages

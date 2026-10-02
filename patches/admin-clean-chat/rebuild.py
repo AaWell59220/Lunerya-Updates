@@ -4,7 +4,7 @@ from pathlib import Path
 
 BASE_SHA256="39256ce059eb551fe83b2a300ff979ff9419367b7a8d5b6e0c6a837008e044b0"
 BASE_SIZE=281273426
-PATCH_SHA256="a1d10688a7933eefcdd24a73de0b6fab6482877ddc1d6cb94f058c92f5732f39"
+PATCH_SHA256="cf90010a4b7388e32f33dda293bf8870f147643b3062df30a3e59f325f58c194"
 REQUIRED={
 "fr/lunerya/adminmod/LuneryaShopRewards.class",
 "fr/lunerya/adminmod/LuneryaChatCleaner.class",

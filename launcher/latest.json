@@ -1,5 +1,5 @@
 {
-  "version": "1.0.44",
+  "version": "1.0.51",
   "file": "Lunerya-Launcher-Setup-1.0.44-x64.exe",
   "sha256": "e5b7637f411e2e2f907b2d9b44ba39ac9e5bb8441ce6662a2a0057e81d1df4e3",
   "size": 157660243,
@@ -25,5 +25,5 @@
       "size": 31831123
     }
   ],
-  "publishedAt": "2026-10-17T14:58:38.3006703Z"
+  "publishedAt": "2026-10-17T15:00:30.448750Z"
 }

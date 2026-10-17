@@ -1,0 +1,29 @@
+{
+  "version": "1.0.44",
+  "file": "Lunerya-Launcher-Setup-1.0.44-x64.exe",
+  "sha256": "e5b7637f411e2e2f907b2d9b44ba39ac9e5bb8441ce6662a2a0057e81d1df4e3",
+  "size": 157660243,
+  "parts": [
+    {
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.44-x64.exe.part001",
+      "sha256": "f51e3219e9bbb54e6201b623388c79ac6b00267a005763a8671395ff248e6785",
+      "size": 41943040
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.44-x64.exe.part002",
+      "sha256": "98d2c4eee192609530020eaf73f3ee8d818cc368f3fb9c666c8c2e01cb56afee",
+      "size": 41943040
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.44-x64.exe.part003",
+      "sha256": "dcc8768a1274dc031cdfc39233562d39e48c777f46ab2a8b67298765dd3328ac",
+      "size": 41943040
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.44-x64.exe.part004",
+      "sha256": "6a59707ab2821f861be375b3c7adfbbdb062fc1db60f99a494ae8b86936a461c",
+      "size": 31831123
+    }
+  ],
+  "publishedAt": "2026-10-17T14:58:38.3006703Z"
+}

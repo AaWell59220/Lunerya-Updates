@@ -13,7 +13,7 @@
       "required": true
     },
     {
-      "path": "mods/lunerya-0.1.0-marchands-v4-test.jar",
+      "path": "mods/lunerya-0.1.0.jar",
       "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/files/mods/lunerya-0.1.0-marchands-v4-test.jar?v=f15f153a03b6cfb0",
       "sha256": "f15f153a03b6cfb019da169f35342a505279fc495af974208aacb14eec3b929e",
       "size": 28394804,

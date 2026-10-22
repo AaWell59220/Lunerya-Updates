@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-22T19:41:00Z",
+  "generatedAt": "2026-10-22T21:09:00Z",
   "baseUrl": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/files/",
   "minecraft": "1.21.1",
   "neoForge": "21.1.248",
@@ -55,10 +55,10 @@
       "required": true
     },
     {
-      "path": "mods/terresansfog-1.0.0-LUNERYA-TEMP.jar",
-      "url": "https://github.com/AaWell59220/Lunerya-Updates/releases/download/lunerya-launcher-v1.0.42-assets/terresansfog-1.0.0-LUNERYA-TEMP.jar",
-      "sha256": "da599cd34c1be9e0353df278757e18971f91c295849a1c638064aedf04a8c3d5",
-      "size": 561467,
+      "path": "mods/terresansfog-1.0.0-LUNERYA-TEMP-V2.jar",
+      "url": "https://github.com/AaWell59220/Lunerya-Updates/releases/download/lunerya-launcher-v1.0.42-assets/terresansfog-1.0.0-LUNERYA-TEMP-V2.jar",
+      "sha256": "18f5f8ec4e1e3bb154d284ba867186dd4632524bb5a343393cb6eebc610304a3",
+      "size": 15534267,
       "required": true
     }
   ]

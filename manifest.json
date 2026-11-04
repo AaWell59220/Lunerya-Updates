@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-25T21:25:02.092Z",
+  "generatedAt": "2026-11-04T19:50:08.854Z",
   "baseUrl": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/files/",
   "minecraft": "1.21.1",
   "neoForge": "21.1.248",
@@ -73,6 +73,20 @@
       "url": "https://cdn.modrinth.com/data/YL57xq9U/versions/t3ruzodq/iris-neoforge-1.8.12%2Bmc1.21.1.jar",
       "sha256": "3e3f94d2d5cdcb8145c4385d521974aa2d8669b2cc212351f70cf06488182e83",
       "size": 2438548,
+      "required": true
+    },
+    {
+      "path": "mods/forgematica-0.4.3+mc1.21.1.jar",
+      "url": "https://cdn.modrinth.com/data/dCKRaeBC/versions/PFUOWUDF/forgematica-0.4.3%2Bmc1.21.1.jar",
+      "sha256": "98b00c73cd349a1143e106cd8bd1706f1b01dc579669e8c82ab5ec01f1b258e0",
+      "size": 1646167,
+      "required": true
+    },
+    {
+      "path": "mods/mafglib-0.4.3+mc1.21.1.jar",
+      "url": "https://cdn.modrinth.com/data/SKI34J7B/versions/CgDQ0u0Q/mafglib-0.4.3%2Bmc1.21.1.jar",
+      "sha256": "d40789ad40e5643ae232a07b4535135fe56585c12538bc30158076f956aab081",
+      "size": 1314767,
       "required": true
     }
   ]

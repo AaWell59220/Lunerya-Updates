@@ -51,6 +51,8 @@ def fetch_mod(project_id: str, prefix: str, modid: str) -> dict:
     payload = read_url(url)
     digest = hashlib.sha256(payload).hexdigest()
     if digest != binary.get("hashes", {}).get("sha256", "").lower():
+        print(f"Diagnostic {filename}: URL={url} size={len(payload)} computed={digest} published={binary.get('hashes', {}).get('sha256')}")
+        print(f"First 60 bytes: {payload[:60]!r}")
         raise RuntimeError(f"SHA256 mismatch for {filename}")
     if len(payload) < 100_000:
         raise RuntimeError(f"Unexpectedly small JAR: {filename}")

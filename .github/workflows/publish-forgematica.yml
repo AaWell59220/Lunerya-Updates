@@ -1,0 +1,49 @@
+name: Publish Forgematica for all Lunerya players
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-forgematica.yml
+      - scripts/publish-forgematica.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lunerya-gh-pages-forgematica
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout publication scripts
+        uses: actions/checkout@v4
+        with:
+          path: publisher
+          persist-credentials: false
+      - name: Checkout live launcher manifest
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          persist-credentials: true
+          fetch-depth: 1
+      - name: Download and verify official NeoForge client mods
+        env:
+          LUNERYA_LIVE_MANIFEST: ${{ github.workspace }}/site/manifest.json
+        run: python3 publisher/scripts/publish-forgematica.py
+      - name: Publish only updated manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd site
+          git add manifest.json
+          changed="$(git diff --cached --name-only)"
+          test "$changed" = 'manifest.json' || { echo "Unexpected paths changed: $changed"; exit 1; }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Distribute Forgematica and MaFgLib via launcher'
+          git push origin HEAD:gh-pages

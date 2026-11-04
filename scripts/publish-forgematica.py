@@ -50,10 +50,14 @@ def fetch_mod(project_id: str, prefix: str, modid: str) -> dict:
         raise RuntimeError(f"Untrusted download URL for {filename}")
     payload = read_url(url)
     digest = hashlib.sha256(payload).hexdigest()
-    if digest != binary.get("hashes", {}).get("sha256", "").lower():
-        print(f"Diagnostic {filename}: URL={url} size={len(payload)} computed={digest} published={binary.get('hashes', {}).get('sha256')}")
-        print(f"First 60 bytes: {payload[:60]!r}")
-        raise RuntimeError(f"SHA256 mismatch for {filename}")
+    # Modrinth publishes SHA-512/SHA-1; Lunerya needs a verified SHA-256.
+    hashes = binary.get("hashes", {})
+    if not hashes.get("sha512"):
+        raise RuntimeError(f"Missing SHA512 from Modrinth for {filename}")
+    if hashlib.sha512(payload).hexdigest() != hashes["sha512"].lower():
+        raise RuntimeError(f"SHA512 mismatch for {filename}")
+    if hashes.get("sha1") and hashlib.sha1(payload).hexdigest() != hashes["sha1"].lower():
+        raise RuntimeError(f"SHA1 mismatch for {filename}")
     if len(payload) < 100_000:
         raise RuntimeError(f"Unexpectedly small JAR: {filename}")
     try:

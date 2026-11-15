@@ -1,29 +1,25 @@
 {
-  "version": "1.0.51",
-  "file": "Lunerya-Launcher-Setup-1.0.44-x64.exe",
-  "sha256": "99259c2ef159cf56f3e6f415adae373d9a90abbcb78322afeb7a9ab1236538c8",
-  "size": 157660226,
+  "version": "1.0.60",
+  "betaLabel": "Beta 9",
+  "file": "Lunerya-Launcher-Setup-1.0.60-x64.exe",
+  "sha256": "be186381563a2a7ad4f52c23cb8e9517bf1c294642ea341a4482bd3310169a8d",
+  "size": 110801609,
   "parts": [
     {
-      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.44-x64.exe.part001",
-      "sha256": "ca019c4c0b17dbb8cd02882858bb388fe8d6fe4392e5683769d8d9de86e1cbe0",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.60-x64.exe.part001-6bc8daa31db8cd53",
+      "sha256": "6bc8daa31db8cd53f253730e5585851bd7263a1580251206f2bd3ef066e439e8",
       "size": 41943040
     },
     {
-      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.44-x64.exe.part002",
-      "sha256": "c4521b32e7a6f92e898731f12eb144a6bc0e50752a4a3feae6e208ef84052183",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.60-x64.exe.part002-f8f62486a01d613d",
+      "sha256": "f8f62486a01d613d80193c92c866df15f9aea6c8f463f3781adeb97d6c22e32b",
       "size": 41943040
     },
     {
-      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.44-x64.exe.part003",
-      "sha256": "3b5c5df3562201c0016e0713a0d32d91914ecbea97cc4e307245a36ab3ab0845",
-      "size": 41943040
-    },
-    {
-      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.44-x64.exe.part004",
-      "sha256": "b8e196933e10ecd8841e26cec17406b33e1ede69763e25d60d62fdc0741c4126",
-      "size": 31831106
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.60-x64.exe.part003-4324b7cde67c7bf2",
+      "sha256": "4324b7cde67c7bf226dfb80b5f1aab0ad802a63967dbc3ea046dd200512eb586",
+      "size": 26915529
     }
   ],
-  "publishedAt": "2026-10-18T12:52:36.859970Z"
+  "label": "Beta 9"
 }

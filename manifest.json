@@ -14,9 +14,9 @@
     },
     {
       "path": "mods/lunerya-0.1.0.jar",
-      "url": "https://github.com/AaWell59220/Lunerya-Updates/releases/download/lunerya-launcher-v1.0.42-assets/lunerya-0.1.0-NOXARIUM-MARCHANDS-V4-FINAL.jar",
-      "sha256": "1c8e786a600e2df8033cdeebf1a1341b665e9f8c25cc5d188de60b42f7d051e2",
-      "size": 28408403,
+      "url": "https://github.com/AaWell59220/Lunerya-Updates/releases/download/lunerya-launcher-v1.0.42-assets/lunerya-0.1.0-NOXARIUM-MARCHANDS-V5.jar",
+      "sha256": "d4672f831c50844dd243295c5dcbd42599878d1ca1f8c0fdb6ed520504ae0371",
+      "size": 28464331,
       "required": true
     },
     {

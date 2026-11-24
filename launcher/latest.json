@@ -1,25 +1,24 @@
 {
-  "version": "1.0.60",
-  "betaLabel": "Beta 9",
-  "file": "Lunerya-Launcher-Setup-1.0.60-x64.exe",
-  "sha256": "be186381563a2a7ad4f52c23cb8e9517bf1c294642ea341a4482bd3310169a8d",
-  "size": 110801609,
+  "version": "1.0.61",
+  "displayName": "Lunerya V1",
+  "file": "Lunerya-Launcher-Setup-1.0.61-x64.exe",
+  "sha256": "40b61c9bfdf3cfe03f3ecd57167aefdbea3ee9e7aad88344b2d1265853ea6536",
+  "size": 113972514,
   "parts": [
     {
-      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.60-x64.exe.part001-6bc8daa31db8cd53",
-      "sha256": "6bc8daa31db8cd53f253730e5585851bd7263a1580251206f2bd3ef066e439e8",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.61-x64.exe.part001-98ef7ffb03505ba1",
+      "sha256": "98ef7ffb03505ba1eeb07b95c71273d4c679b716e4762a93255f6e1b6b7b8c6b",
       "size": 41943040
     },
     {
-      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.60-x64.exe.part002-f8f62486a01d613d",
-      "sha256": "f8f62486a01d613d80193c92c866df15f9aea6c8f463f3781adeb97d6c22e32b",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.61-x64.exe.part002-c3f4aec4d119c3e6",
+      "sha256": "c3f4aec4d119c3e68d2b9b2b72911c78a9f9a4e4c368cdbda1725ddb2505a228",
       "size": 41943040
     },
     {
-      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.60-x64.exe.part003-4324b7cde67c7bf2",
-      "sha256": "4324b7cde67c7bf226dfb80b5f1aab0ad802a63967dbc3ea046dd200512eb586",
-      "size": 26915529
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.61-x64.exe.part003-2b3e855ce8751440",
+      "sha256": "2b3e855ce8751440f22b9d73770135c2189decb7cbb20cc11fe592c2239a613b",
+      "size": 30086434
     }
-  ],
-  "label": "Beta 9"
+  ]
 }

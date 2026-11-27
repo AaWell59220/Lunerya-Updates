@@ -1,24 +1,24 @@
 {
-  "version": "1.0.61",
+  "version": "1.0.62",
   "displayName": "Lunerya V1",
-  "file": "Lunerya-Launcher-Setup-1.0.61-x64.exe",
-  "sha256": "40b61c9bfdf3cfe03f3ecd57167aefdbea3ee9e7aad88344b2d1265853ea6536",
-  "size": 113972514,
+  "file": "Lunerya-Launcher-Setup-1.0.62-x64.exe",
+  "sha256": "7f37ee0dd8fe8c133925898e19f1e1b2169e97dd6802511d76b73de774bb6850",
+  "size": 113972415,
   "parts": [
     {
-      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.61-x64.exe.part001-98ef7ffb03505ba1",
-      "sha256": "98ef7ffb03505ba1eeb07b95c71273d4c679b716e4762a93255f6e1b6b7b8c6b",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.62-x64.exe.part001-1003b0484c1d0a67",
+      "sha256": "1003b0484c1d0a67506a3a0d7002e26384287fe04336f7ac271056eac38f2d67",
       "size": 41943040
     },
     {
-      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.61-x64.exe.part002-c3f4aec4d119c3e6",
-      "sha256": "c3f4aec4d119c3e68d2b9b2b72911c78a9f9a4e4c368cdbda1725ddb2505a228",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.62-x64.exe.part002-b2f036c592ea956c",
+      "sha256": "b2f036c592ea956c985d23822bc632ba22632a8ab7d950dfa58b49e6cd1af148",
       "size": 41943040
     },
     {
-      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.61-x64.exe.part003-2b3e855ce8751440",
-      "sha256": "2b3e855ce8751440f22b9d73770135c2189decb7cbb20cc11fe592c2239a613b",
-      "size": 30086434
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/launcher/parts/Lunerya-Launcher-Setup-1.0.62-x64.exe.part003-fd202e88bc75103d",
+      "sha256": "fd202e88bc75103df3f9556fc6a9d140553cc622691de098d54fb82d460c8829",
+      "size": 30086335
     }
   ]
 }

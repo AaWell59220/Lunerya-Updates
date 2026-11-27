@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "baseUrl": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/hybrid/1.0.62/",
+  "minecraft": "1.21.1",
+  "neoForge": "21.1.248",
+  "files": [
+    {
+      "path": "mods/lunerya-0.1.0.jar",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/hybrid/1.0.62/mods/lunerya-0.1.0.jar",
+      "size": 63458476,
+      "sha256": "4117c1a5f55acf9e55b9f10e57c05928c1a2698470abe0f49efe68181d7bce68",
+      "required": true
+    },
+    {
+      "path": "mods/LuneryaAdmin-1.21.1-3.4.1-live-catalog-test.jar",
+      "url": "https://github.com/AaWell59220/Lunerya-Updates/releases/download/lunerya-1.0.60-mods/LuneryaAdmin-1.21.1-3.4.1-live-catalog-test-d33e6fd700de.jar",
+      "size": 286842449,
+      "sha256": "d33e6fd700de2efe7bd7e60d6f75f15ff15ec1e1197262a574a15df3c39e8c07",
+      "required": true
+    },
+    {
+      "path": "mods/luneryacrates-0.3.4.jar",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/files/mods/luneryacrates-0.3.4.jar",
+      "size": 2666215,
+      "sha256": "9ab07e5a53c6d7d5657d54ddb1aec724f5da13c50d8d7ff0b17cdb3ac9fb1ba2",
+      "required": true
+    },
+    {
+      "path": "mods/luneryapass-1.1.0.jar",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/files/mods/luneryapass-1.1.0.jar",
+      "size": 669157,
+      "sha256": "5f9195dab269f206d6f04b9a91afbefd697dc02d663fb6c8e6d1b2b514d11c6f",
+      "required": true
+    },
+    {
+      "path": "mods/luneryazoom-1.0.0.jar",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/files/mods/luneryazoom-1.0.0.jar",
+      "size": 7603,
+      "sha256": "96ab01da8bc5d408e11140599d780c23264312cbf0fe6e355ecaa7b59d257ed1",
+      "required": true
+    },
+    {
+      "path": "mods/geckolib-neoforge-1.21.1-4.9.2.jar",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/files/mods/geckolib-neoforge-1.21.1-4.9.2.jar",
+      "size": 630584,
+      "sha256": "5e548466af9ab6aca7a91a7c7d4dc0dc8bc385e22958aed5da0e7bebd0fa3fba",
+      "required": true
+    },
+    {
+      "path": "mods/neoessentials-1.0.2.6-mc1.21.1+build.480.jar",
+      "url": "https://raw.githubusercontent.com/AaWell59220/Lunerya-Updates/gh-pages/files/mods/neoessentials-1.0.2.6-mc1.21.1%2Bbuild.480.jar",
+      "size": 15865714,
+      "sha256": "9aedcaf10fe7a41f911d05ccfc4b32854b5bcad8dd08fb6047ea18e705c35785",
+      "required": true
+    },
+    {
+      "path": "mods/terresansfog-1.0.0-LUNERYA-TEMP-V2.jar",
+      "url": "https://github.com/AaWell59220/Lunerya-Updates/releases/download/lunerya-launcher-v1.0.42-assets/terresansfog-1.0.0-LUNERYA-TEMP-V2.jar",
+      "size": 15534267,
+      "sha256": "18f5f8ec4e1e3bb154d284ba867186dd4632524bb5a343393cb6eebc610304a3",
+      "required": true
+    },
+    {
+      "path": "mods/sodium-neoforge-0.6.13+mc1.21.1.jar",
+      "url": "https://cdn.modrinth.com/data/AANobbMI/versions/Pb3OXVqC/sodium-neoforge-0.6.13%2Bmc1.21.1.jar",
+      "size": 1162994,
+      "sha256": "7acd7af2ef75ec883a6872c17494ead65e38025151eb08a1d60e36d34377f403",
+      "required": true
+    },
+    {
+      "path": "mods/iris-neoforge-1.8.12+mc1.21.1.jar",
+      "url": "https://cdn.modrinth.com/data/YL57xq9U/versions/t3ruzodq/iris-neoforge-1.8.12%2Bmc1.21.1.jar",
+      "size": 2438548,
+      "sha256": "3e3f94d2d5cdcb8145c4385d521974aa2d8669b2cc212351f70cf06488182e83",
+      "required": true
+    },
+    {
+      "path": "mods/forgematica-0.4.3+mc1.21.1.jar",
+      "url": "https://cdn.modrinth.com/data/dCKRaeBC/versions/PFUOWUDF/forgematica-0.4.3%2Bmc1.21.1.jar",
+      "size": 1646167,
+      "sha256": "98b00c73cd349a1143e106cd8bd1706f1b01dc579669e8c82ab5ec01f1b258e0",
+      "required": true
+    },
+    {
+      "path": "mods/mafglib-0.4.3+mc1.21.1.jar",
+      "url": "https://cdn.modrinth.com/data/SKI34J7B/versions/CgDQ0u0Q/mafglib-0.4.3%2Bmc1.21.1.jar",
+      "size": 1314767,
+      "sha256": "d40789ad40e5643ae232a07b4535135fe56585c12538bc30158076f956aab081",
+      "required": true
+    }
+  ]
+}
